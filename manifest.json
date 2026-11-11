@@ -1,0 +1,24 @@
+{
+  "id": "sitebill.callback",
+  "name": { "ru": "Обратный звонок", "en": "Callback request", "sr": "Povratni poziv", "tg": "Занги бозгашт" },
+  "version": "0.1.0",
+  "vendor": { "name": "Sitebill", "url": "https://sitebillcms.com/" },
+  "description": {
+    "ru": "Кнопка «Перезвоните мне» на сайте: заявка сразу в CRM, уведомление менеджеру, журнал заявок в админке.",
+    "en": "A “Call me back” button on the site: the request goes straight to the CRM, managers are notified, requests are listed in the admin panel."
+  },
+  "sdk": { "php": "1", "web": "1" },
+  "requires": { "host": ">=1.1" },
+  "provider": "SitebillApps\\Sitebill\\Callback\\CallbackServiceProvider",
+  "permissions": ["crm.leads.create", "properties.read", "notifications.send"],
+  "admin": {
+    "menu": [{ "label": { "ru": "Обратный звонок", "en": "Callbacks", "sr": "Povratni pozivi", "tg": "Занги бозгашт" }, "icon": "i-lucide-phone-call", "path": "" }],
+    "pages": [""],
+    "widgets": { "admin.dashboard": "CallbackStats" }
+  },
+  "site": {
+    "widgets": { "property.detail": "CallbackForm", "global": "CallbackFloatingButton" }
+  },
+  "web": { "admin": "web/admin.mjs", "site": "web/site.mjs" },
+  "schedule": [{ "command": "sitebill-callback:cleanup", "cron": "30 3 * * *" }]
+}

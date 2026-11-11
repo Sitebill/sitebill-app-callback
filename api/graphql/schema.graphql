@@ -1,0 +1,58 @@
+"A \"call me back\" request (app sitebill.callback)."
+type CallbackRequest {
+    id: ID!
+    name: String!
+    phone: String!
+    comment: String
+    property_id: Int
+    property_title: String
+    property_url: String
+    "Lead in the site's CRM."
+    lead_id: Int
+    "new | done"
+    status: String!
+    created_at: String!
+}
+
+type CallbackSettings {
+    show_on_property: Boolean!
+    show_floating: Boolean!
+    button_text: String!
+    retention_days: Int!
+}
+
+type CallbackStats {
+    new: Int!
+    total: Int!
+}
+
+input CallbackSettingsInput {
+    show_on_property: Boolean
+    show_floating: Boolean
+    button_text: String @rules(apply: ["nullable", "max:60"])
+    retention_days: Int @rules(apply: ["nullable", "integer", "min:7", "max:3650"])
+}
+
+extend type Query {
+    callbackRequests(status: String @rules(apply: ["nullable", "in:new,done"]), limit: Int = 100): [CallbackRequest!]!
+        @guard @can(ability: "admin", model: "Tenant")
+        @field(resolver: "SitebillApps\\Sitebill\\Callback\\GraphQL\\CallbackResolver@requests")
+
+    callbackStats: CallbackStats!
+        @guard @can(ability: "admin", model: "Tenant")
+        @field(resolver: "SitebillApps\\Sitebill\\Callback\\GraphQL\\CallbackResolver@stats")
+
+    callbackSettings: CallbackSettings!
+        @guard @can(ability: "admin", model: "Tenant")
+        @field(resolver: "SitebillApps\\Sitebill\\Callback\\GraphQL\\CallbackResolver@settings")
+}
+
+extend type Mutation {
+    callbackSetStatus(id: ID!, status: String! @rules(apply: ["in:new,done"])): CallbackRequest!
+        @guard @can(ability: "admin", model: "Tenant")
+        @field(resolver: "SitebillApps\\Sitebill\\Callback\\GraphQL\\CallbackResolver@setStatus")
+
+    callbackSaveSettings(input: CallbackSettingsInput!): CallbackSettings!
+        @guard @can(ability: "admin", model: "Tenant")
+        @field(resolver: "SitebillApps\\Sitebill\\Callback\\GraphQL\\CallbackResolver@saveSettings")
+}
