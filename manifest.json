@@ -3,6 +3,8 @@
   "name": { "ru": "Обратный звонок", "en": "Callback request", "sr": "Povratni poziv", "tg": "Занги бозгашт" },
   "version": "0.1.0",
   "vendor": { "name": "Sitebill", "url": "https://sitebillcms.com/" },
+  "license": "MIT",
+  "repository": "https://github.com/Sitebill/sitebill-app-callback",
   "description": {
     "ru": "Кнопка «Перезвоните мне» на сайте: заявка сразу в CRM, уведомление менеджеру, журнал заявок в админке.",
     "en": "A “Call me back” button on the site: the request goes straight to the CRM, managers are notified, requests are listed in the admin panel."
